@@ -15,6 +15,8 @@ opts.add_argument("--headless")
 
 class MedbookProcessor:
     def __init__(self):
+        os.system('clear')
+        print('Connecting to medbook...')
         self.driver = Firefox(options=opts)
         self.driver.implicitly_wait(2)  # seconds
         self.driver.get("https://www.medbook.com/nl/login")
@@ -30,8 +32,9 @@ class MedbookProcessor:
         ).click()
         sleep(2)
         self.driver.find_element(By.CSS_SELECTOR, "a.button > span").click()
+        print('CONNECTED!')
         sleep(2)
-
+        os.system('clear')
     def upload_case(self, date_of_birth, specialty, procedure):
         try:
             self.date_box = self.driver.find_element(
@@ -48,6 +51,8 @@ class MedbookProcessor:
             )
             self.procedure_box.clear()
             self.procedure_box.send_keys(procedure)
+            self.airway_box = Select(self.driver.find_element(By.NAME, "log_ingreep_luchtweg"))
+            self.airway_box.select_by_value("601")
             self.supervision_box = self.driver.find_element(
                 By.CSS_SELECTOR, "input[type='radio'][value='Z']"
             ).click()
